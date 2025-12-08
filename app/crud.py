@@ -1,13 +1,13 @@
 from sqlalchemy.orm import Session
 from . import models, schemas
 
-pip install fastapi==0.110.2 uvicorn[standard] sqlalchemy==2.0.15 pydantic
+
 def list_patients(db: Session):
     return db.query(models.Patient).all()
 
 
 def create_patient(db: Session, data: schemas.PatientCreate):
-    obj = models.Patient(**data.dict())
+    obj = models.Patient(**data.model_dump())
     db.add(obj)
     db.commit()
     db.refresh(obj)
@@ -19,7 +19,7 @@ def list_doctors(db: Session):
 
 
 def create_doctor(db: Session, data: schemas.DoctorCreate):
-    obj = models.Doctor(**data.dict())
+    obj = models.Doctor(**data.model_dump())
     db.add(obj)
     db.commit()
     db.refresh(obj)
@@ -31,7 +31,7 @@ def list_services(db: Session):
 
 
 def create_service(db: Session, data: schemas.ServiceCreate):
-    obj = models.Service(**data.dict())
+    obj = models.Service(**data.model_dump())
     db.add(obj)
     db.commit()
     db.refresh(obj)

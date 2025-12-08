@@ -1,6 +1,6 @@
 from datetime import datetime, date
 from typing import List, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class PatientCreate(BaseModel):
@@ -12,9 +12,7 @@ class PatientCreate(BaseModel):
 
 class PatientOut(PatientCreate):
     id: int
-
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class DoctorCreate(BaseModel):
@@ -26,9 +24,7 @@ class DoctorCreate(BaseModel):
 
 class DoctorOut(DoctorCreate):
     id: int
-
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class ServiceCreate(BaseModel):
@@ -39,9 +35,7 @@ class ServiceCreate(BaseModel):
 
 class ServiceOut(ServiceCreate):
     id: int
-
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class AppointmentServiceItem(BaseModel):
@@ -66,7 +60,5 @@ class AppointmentOut(BaseModel):
     status: str
     notes: Optional[str]
     services: List[AppointmentServiceItem]
-
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
