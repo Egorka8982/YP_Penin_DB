@@ -1,3 +1,12 @@
+"""
+CRUD операции для работы с базой данных.
+
+БЕЗОПАСНОСТЬ ОТ SQL-ИНЪЕКЦИЙ:
+- Используется ORM SQLAlchemy вместо сырых SQL-запросов
+- Все параметры передаются через ORM-методы (query, filter), которые автоматически параметризуют запросы
+- Входные данные валидируются через Pydantic-схемы перед использованием
+- Нет конкатенации SQL-строк - все запросы строятся через ORM API
+"""
 from sqlalchemy.orm import Session
 from . import models, schemas
 
@@ -63,8 +72,10 @@ def create_appointment(db: Session, data: schemas.AppointmentCreate):
 def list_appointments(db: Session, doctor_id=None, patient_id=None):
     q = db.query(models.Appointment)
     if doctor_id:
+        # ORM автоматически параметризует: WHERE doctor_id = :doctor_id
         q = q.filter(models.Appointment.doctor_id == doctor_id)
     if patient_id:
+        # ORM автоматически параметризует: WHERE patient_id = :patient_id
         q = q.filter(models.Appointment.patient_id == patient_id)
     return q.all()
 
